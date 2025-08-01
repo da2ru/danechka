@@ -1,0 +1,34 @@
+{{ define "main" }}
+{{ if eq .RelPermalink "/categories/" }}
+    <div class="tag-cloud">
+        {{ $maxCount := (index $.Site.Taxonomies.categories.ByCount 0).Count }}
+        {{ range $.Site.Taxonomies.categories.ByCount }}
+            {{ $count := .Count }}
+            {{ $size := div (mul $count 200) $maxCount }} <!-- Adjust size multiplier as needed -->
+            <a href="/categories/{{ .Name }}" class="tag-cloud-item" style="font-size: {{ $size }}%;" title="{{ .Count }} posts">{{ .Name }}</a>
+        {{ end }}
+    </div>
+{{ else }}
+    <div class="list">
+        {{ range .Paginator.Pages }}
+            <div class="listItem">
+                <div class="listItemTexts">
+                    <h1 class="listItemTitle">
+                        <a href="{{ .Permalink }}">{{ .Title }}</a>
+                    </h1>
+                    <p class="listItemDesc">{{ .Params.description }}</p>
+                    <div class="listItemDetail">
+                        <time>{{ .Date }}</time>
+                    </div>
+                    <div class="listItemCategories">
+                        {{ range (.GetTerms "categories") }}
+                            <a class="listItemCategory" href="{{ .Permalink }}">{{ .Name }}</a>
+                        {{ end }}
+                    </div>
+                </div>
+            </div>
+        {{ end }}
+        {{ template "_internal/pagination.html" . }}
+    </div>
+{{ end }}
+{{ end }}

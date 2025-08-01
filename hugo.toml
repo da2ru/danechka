@@ -1,0 +1,16 @@
+baseURL = "https://www.danechka.org"
+languageCode = 'en-us'
+title = 'Dan`s Blog'
+
+paginate = 5
+
+[params]
+    description = "Blog about my life."
+    Headshot = "/images/portrait.svg"
+    avatar = "images/avatar.webp"
+    
+
+[taxonomies]
+    category = "categories"
+    author = "authors"
+    image = "images"

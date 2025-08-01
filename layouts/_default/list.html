@@ -1,0 +1,40 @@
+{{ define "main" }}
+    {{ if eq .RelPermalink "/categories/" }}
+        {{ range $.Site.Taxonomies.categories.ByCount }}
+            <a href="/categories/{{ .Name }}">
+                # {{ .Name }} <small>({{ .Count }})</small>
+            </a>
+        {{ end }}
+    {{ else }}
+        <div class="list">
+            {{ range .Paginator.Pages }}
+                {{ if not .Params.draft }} <!-- Ensure the page is not a draft -->
+                    {{ if eq .Section "posts" }} <!-- Ensure the content is from the 'posts' section -->
+                        <article class="listItem">
+                            {{/*  {{ if .Params.image }}
+                                <img src="{{ .Params.image }}" alt="{{ .Title }}" class="listItemImage" loading="lazy">
+                            {{ end }}  */}}
+                            <div class="listItemTexts">
+                                <div class="listItemDetail">
+                                    <time datetime="{{ .Date }}">{{ .Date.Format "January 2, 2006" }}</time>
+                                </div>  
+                                <h1 class="listItemTitle">
+                                    <a href="{{ .Permalink }}">{{ .Title }}</a>
+                                </h1>
+                                <div class="listItemCategories">
+                                    {{ range (.GetTerms "categories") }}
+                                        <a class="listItemCategory" href="{{ .Permalink }}">{{ .Name }}</a>
+                                    {{ end }}
+                                </div>
+                                {{ if .Params.description }}
+                                    <p class="listItemDesc">{{ .Params.description }}</p>
+                                {{ end }}                         
+                            </div>
+                        </article>
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+            {{ template "_internal/pagination.html" . }}
+        </div>
+    {{ end }}
+{{ end }}

@@ -1,0 +1,37 @@
+{{ define "main" }}
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+  <div class="gallery">
+    {{ $pages := .Site.RegularPages }}
+    {{ $sorted := sort $pages "Params.order" "desc" }} <!-- or "asc" -->
+    {{ range $sorted }}
+      {{ if eq .Section "photos" }}
+      <div class="gallery-item" onclick="openLightbox('{{ .Params.image }}', '{{ .Title }}', '{{ .Params.date }}', '{{ .Params.location }}', '{{ .Params.comment }}')">
+        <img src="/images/gallery-photos/{{ .Params.image }}" alt="{{ .Title }}">
+      </div>  
+      {{ end }}
+    {{ end }}
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <span class="close" onclick="closeLightbox()">&times;</span>
+    <div class="lightbox-content">
+      <img id="lightbox-img" src="" alt="">
+      <div class="lightbox-comment">
+        <h2 id="lightbox-title"></h2>
+        <p id="lightbox-date"></p>
+        <p id="lightbox-location"></p>
+        <p id="lightbox-comment"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/gallery.js"></script>
+</body>
+</html>
+{{ end }}
